@@ -17,6 +17,18 @@ function convertPokeApiDetailToPokemon(pokeDetail) {
     return pokemon
 }
 
+pokeApi.loadingToggle = (state) => {
+    const loadingIcon = document.getElementById('loadingIcon')
+    const loadMoreButton = document.getElementById('loadMoreButton')
+    if(state){
+        loadingIcon.style.opacity = '1'
+        loadMoreButton.style.visibility = 'hidden'
+    }else{
+        loadingIcon.style.opacity = '0'
+        loadMoreButton.style.visibility = 'visible'
+    }
+}
+
 pokeApi.getPokemonDetail = (pokemon) => {
     return fetch(pokemon.url)
         .then((response) => response.json())
@@ -25,6 +37,8 @@ pokeApi.getPokemonDetail = (pokemon) => {
 
 pokeApi.getPokemons = (offset = 0, limit = 5) => {
     const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+
+    pokeApi.loadingToggle(true)
 
     return fetch(url)
         .then((response) => response.json())
