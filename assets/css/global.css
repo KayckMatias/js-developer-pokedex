@@ -22,3 +22,8 @@ body {
         border-radius: 1rem;
     }
 }
+
+#loadingIcon{
+    height: 2rem;
+    transition: opacity 0.5s;
+}

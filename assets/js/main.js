@@ -3,7 +3,8 @@ const loadMoreButton = document.getElementById('loadMoreButton')
 
 const maxRecords = 151
 const limit = 10
-let offset = 0;
+let offset = 0
+var loaded = false
 
 function convertPokemonToLi(pokemon) {
     return `
@@ -24,13 +25,40 @@ function convertPokemonToLi(pokemon) {
 }
 
 function loadPokemonItens(offset, limit) {
+    if(loaded = true){
+        pokemonList.innerHTML = ""
+    }
+
     pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
         pokemonList.innerHTML += pokemons.map(convertPokemonToLi).join('')
         pokeApi.loadingToggle(false)
     })
 }
 
-loadPokemonItens(offset, limit)
+function createLoadingItems(){
+    var loadingItem = `<li class="pokemon-loading">
+    <span class="number">#1</span>
+    <span class="name">bulbasaur</span>
+
+    <div class="detail">
+        <ol class="types">
+            <li class="type grass">grass</li><li class="type poison">poison</li>
+        </ol>
+
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" alt="bulbasaur">
+    </div>
+    </li>`
+    loaded = true
+    for(i=0;i<10;i++){
+        pokemonList.innerHTML += loadingItem
+    }
+}
+
+createLoadingItems();
+
+setTimeout(() => {  
+    loadPokemonItens(offset, limit)
+}, 500)
 
 loadMoreButton.addEventListener('click', () => {
     offset += limit
